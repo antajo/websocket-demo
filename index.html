@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>This is the title of the webpage!</title>
+</head>
+
+<body>
+    <div>
+        <form onsubmit="event.preventDefault();sendMsg()">
+            <table>
+                <tbody id="chat">
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <input type="text" id="msg" />
+                            <button type="submit">Send </button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</body>
+<script>
+    const ws = new WebSocket("ws://localhost:4333");
+    ws.addEventListener("open", () => {
+        console.log("This is interesting");
+    });
+    ws.addEventListener("message", (res) => {
+        console.log("Got something", res);
+        let htmlCont = document.getElementById("chat").innerHTML;
+        htmlCont += `<tr><td>${res.data}</td></tr>`;
+        document.getElementById("chat").innerHTML = htmlCont;
+
+    });
+    const sendMsg = () => {
+        const msg = document.getElementById("msg").value;
+        ws.send(msg);
+        document.getElementById("msg").value = "";
+    };
+</script>
+
+</html>
