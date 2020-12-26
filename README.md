@@ -1,2 +1,5 @@
 # websocket-demo
-Node server and web
+# npm i
+# npm run server
+# npm run open
+
